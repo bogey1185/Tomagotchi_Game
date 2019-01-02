@@ -6,8 +6,39 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
+	<main>
+		<div id="topMain">
+			<div>
+				<img id="moon" src="images/cartoonMoon.jpeg">
+			</div>
+			<div id="scoreboard">
+				<div class="divsec" id="age">Age: <span id="ageSpan">0</span></div>
+				<div class="divsec" id="hungerNum">Hunger: <span id="hungerSpan">0</span></div>
+				<div class="divsec" id="boredNum">Boredom: <span id="boredSpan">0</span></div>
+				<div class="divsec" id="sleepyNum">Sleepiness: <span id="sleepSpan">0</span></div>
+			</div>
+			<div>
+				<img id="sun" src="images/cartoonSun.jpeg">
+			</div>
+		</div>
+		<div id="botMain">
+			<div id="toma"></div>
+		</div>
+	</main>
 
-
+	<footer>
+		<div id="ground"></div>
+		<h1 id="name"></h1>
+		<div id="UI">
+			<button>Feed</button>
+			<button>Play</button>
+			<button>Wake/Sleep</button>
+			<form id="form">
+		        <input type="text" id="pet-name"></input>
+      			<button id="set-name">Set Name</button>
+    		</form>
+		</div>
+	</footer>
 
 
 	<script type="text/javascript" src="js/app.js"></script>

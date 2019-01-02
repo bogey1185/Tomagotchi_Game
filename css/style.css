@@ -1,0 +1,50 @@
+body {
+	display: flex;	
+	flex-direction: column;
+	margin: 0;
+}
+
+main {
+	background-color: rgb(10, 1, 110);
+	height: 60vh;
+}
+
+#topMain {
+	display: flex;
+	justify-content: space-between;
+}
+
+#scoreboard {
+	border:	2px white solid;
+	height: 160px;
+	width: 135px;
+	display: flex;	
+	flex-wrap: wrap;
+	color: white;
+
+}
+
+#scoreboard div {
+	border: 1px white solid;
+	height: 24%;
+	width: 100%;
+	line-height: 100%;
+}
+
+.divsec {
+	margin: 0;
+	padding: 0 10px 0 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#moon {
+	height: 150px;
+	width: 230px;
+}
+
+#sun {
+	height: 150px;
+	width: 230px;
+}

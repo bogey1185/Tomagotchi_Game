@@ -11,9 +11,9 @@ class Tomagotchi {
 }
 
 const game = { 
-	lights: true,
+	awake: true,
 	feedToma() {
-		if (this.lights) {
+		if (this.awake) {
 			//feed language displayed in DOM?
 			pet.hunger = 0;
 		} else {
@@ -25,7 +25,7 @@ const game = {
 		}
 	},
 	playToma() {
-		if (this.lights) {
+		if (this.awake) {
 			//play language displayed in DOM?
 			pet.boredom = 0;
 		} else {
@@ -36,9 +36,9 @@ const game = {
 			}
 		}
 	},
-	toggleLights() {
-		this.lights ? this.lights = false : this.lights = true;
-		if (this.lights === false) {
+	toggleAwake() {
+		this.awake ? this.awake = false : this.awake = true;
+		if (this.awake === false) {
 			//set wait interval.
 			pet.sleepiness = 0;
 		}	
@@ -59,7 +59,7 @@ const game = {
 
 
 	//buttons and forms: form to name pet. button to assign name.
-	// buttons to feed, turn off/on lights, play.
+	// buttons to feed, turn off/on awake, play.
 
 
 
