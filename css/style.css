@@ -2,10 +2,11 @@ body {
 	display: flex;	
 	flex-direction: column;
 	margin: 0;
+	font-family: monospace;
 }
 
 main {
-	background-color: rgb(10, 1, 110);
+	background-color: rgb(174, 221, 218);
 	height: 60vh;
 }
 
@@ -15,17 +16,17 @@ main {
 }
 
 #scoreboard {
-	border:	2px white solid;
+	border:	2px rgb(135, 134, 133) solid;
 	height: 160px;
 	width: 135px;
 	display: flex;	
 	flex-wrap: wrap;
-	color: white;
-
+	color: rgb(135, 134, 133);
+	font-size: 15px;
 }
 
 #scoreboard div {
-	border: 1px white solid;
+	border: 1px rgb(135, 134, 133) solid;
 	height: 24%;
 	width: 100%;
 	line-height: 100%;
@@ -40,11 +41,41 @@ main {
 }
 
 #moon {
-	height: 150px;
+	height: 164px;
 	width: 230px;
+	visibility: hidden;
 }
 
 #sun {
-	height: 150px;
+	height: 180px;
 	width: 230px;
+	visibility: visible;
+}
+
+#ground {
+	height: 10vh;
+	background-color: green;
+}
+
+h1 {
+	padding: 0;
+	margin: 0;
+	color: rgb(155, 141, 133);
+}
+
+#UI {
+	height: 30vh;
+	background-color: rgb(76, 32, 6);
+	text-align: center;
+}
+
+button {
+	font-family: monospace;
+	font-size: 15px;
+	margin: 20px;
+	text-align: center;
+}
+
+form {
+	text-align: center;
 }

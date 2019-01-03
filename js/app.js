@@ -5,52 +5,111 @@ class Tomagotchi {
 		this.sleepiness = 0;
 		this.boredom = 0;
 		this.age = 0;
-		//name should be visibility: hidden when null. If named, visible at top.
+		this.awake = true;
 	}
-
+	eat() {
+		this.hunger = 0;
+		$('#memo').text('nomnomnom... Thanks!');
+	}
+	play() {
+		this.boredom = 0;
+		$('#memo').text('That was fun!');
+	}
+	sleep() {
+		this.sleepiness = 0;
+		if (this.awake === false) {
+			$('#memo').text('zzzzzzZZZZZZZZZzzzzzz');
+		}
+	}
 }
 
 const game = { 
-	awake: true,
+	time: 0,
 	feedToma() {
-		if (this.awake) {
-			//feed language displayed in DOM?
-			pet.hunger = 0;
+		if (pet.awake) {
+			pet.eat();
 		} else {
-			if (pet.Name) {
-				//display in DOM. '{name} is sleeping rn. feed when he /she is awake!'
+			if (pet.name) {
+				$('#memo').text(`${pet.name} is sleeping right now....`);
 			} else {
-				//display in dom 'your pet is sleeping rn. feed when awake.'
+				$('#memo').text('Your pet is sleeping right now....');
 			}
 		}
 	},
 	playToma() {
-		if (this.awake) {
-			//play language displayed in DOM?
-			pet.boredom = 0;
+		if (pet.awake) {
+			pet.play();
 		} else {
-			if (pet.Name) {
-				//display in DOM. '{name} is sleeping rn. play when he /she is awake!'
+			if (pet.name) {
+				$('#memo').text(`${pet.name} is sleeping right now....`);
 			} else {
-				//display in dom 'your pet is sleeping rn. play when awake.'
+				$('#memo').text('Your pet is sleeping right now....');
 			}
 		}
 	},
 	toggleAwake() {
-		this.awake ? this.awake = false : this.awake = true;
-		if (this.awake === false) {
-			//set wait interval.
-			pet.sleepiness = 0;
-		}	
+		if (pet.awake) {
+			$('#sun').css('visibility', 'hidden');
+			$('#moon').css('visibility', 'visible');
+			$('main').css('backgroundColor', 'rgb(14, 29, 50)');
+			pet.awake = false;
+			pet.sleep();
+		} else {
+			$('#sun').css('visibility', 'visible');
+			$('#moon').css('visibility', 'hidden');
+			$('main').css('backgroundColor', 'rgb(174, 221, 218)');
+			$('#memo').text('');
+			pet.awake = true;
+		}
 	}, 
+	addHunger() {
+		pet.hunger++;
+		$('#hungerSpan').text(pet.hunger);
+		if (pet.hunger === 10) {
+			this.killToma();
+		}
+	},
+	addSleepiness() {
+		pet.sleepiness++;
+		$('#sleepSpan').text(pet.sleepiness);
+		if (pet.sleepiness === 10) {
+			this.killToma();
+		}
+	}, 
+	addBoredom() {
+		pet.boredom++;
+		$('#boredSpan').text(pet.boredom);
+		if (pet.doredom === 10) {
+			this.killToma();
+		}
+	}, 
+	addAge() {
+		pet.age++;
+		$('#ageSpan').text(pet.age);
+		if (pet.age === 2 || pet.age === 4) {
+			this.evolveToma();
+		}
+		if (pet.age === 10) {
+			this.killToma();
+		}
+	},
 	timeLapseToma() {
-		//should increment hunger by 1 every 1 min, and kill at 10.
-		//should increment sleepiness by 1 every 2 min, and kill at 10
-		//should increment boredom by 1 every .5 min, and kill at 10
-		// increment age by 1 every 10 mins
-			//evolve at 1 (10 mins old), and 3 (30 mins old); kill at 10 years old.
+		let runHunger = setInterval(this.addHunger, 60000);
+		let runSleepiness = setInterval(this.addSleepiness, 120000);
+		let runBoredom = setInterval(this.addBoredom, 30000);
+		let runAge = setInterval(this.addAge, 600000);
+	},
+	evolveToma() {
+		
+	},
+	killToma() {
+
 	},
 	init() {
+		//should be a button to run init somewhere
+		//should set all counters to 0 initially
+
+
 		//should call class to create TOMA.
 		//should immediately start timeLapseToma()
 
@@ -65,4 +124,28 @@ const game = {
 
 }
 
+$('#UI').on('click', (event) => {
+	if (event.target.innerText === 'Feed') {
+		game.feedToma();
+	} else if (event.target.innerText === 'Play') {
+		game.playToma();
+	} else if (event.target.innerText === 'Wake/Sleep') {
+		game.toggleAwake();
+	} else if (event.target.innerText === 'Set Name') {
+		event.preventDefault();
+		pet.name = $('#form')[0].children[0].value;
+		if (pet.name) {
+			$('#name').text(`My name is ${pet.name}.`);
+		} else {
+			return;
+		}
+	}
+});
+
 let pet = new Tomagotchi();
+
+
+
+
+
+
