@@ -32,54 +32,60 @@ const game = {
 	time: 0,
 	timeLapse: null,
 	feedToma() {
-		if (pet.awake) {
-			pet.eat();
-		} else {
-			if (pet.name) {
-				$('#memo').text(`${pet.name} is sleeping right now....`);
+		if (pet.dead === false) {
+			if (pet.awake) {
+				pet.eat();
 			} else {
-				$('#memo').text('Your pet is sleeping right now....');
+				if (pet.name) {
+					$('#memo').text(`${pet.name} is sleeping right now....`);
+				} else {
+					$('#memo').text('Your pet is sleeping right now....');
+				}
 			}
 		}
 	},
 	playToma() {
-		if (pet.awake) {
-			pet.play();
-		} else {
-			if (pet.name) {
-				$('#memo').text(`${pet.name} is sleeping right now....`);
+		if (pet.dead === false) {
+			if (pet.awake) {
+				pet.play();
 			} else {
-				$('#memo').text('Your pet is sleeping right now....');
+				if (pet.name) {
+					$('#memo').text(`${pet.name} is sleeping right now....`);
+				} else {
+					$('#memo').text('Your pet is sleeping right now....');
+				}
 			}
 		}
 	},
 	toggleAwake() {
-		if (pet.awake) {
-			$('#sun').css('visibility', 'hidden');
-			$('#moon').css('visibility', 'visible');
-			$('main').css('backgroundColor', 'rgb(14, 29, 50)');
-			if (pet.age < 2) {
-				$('#tomaImg').attr('src', 'images/squirtle-night.jpeg');
-			} else if (pet.age >= 2 && pet.age < 4) {
-				$('#tomaImg').attr('src', 'images/wartortle-night.jpeg');
+		if (pet.dead === false) {
+			if (pet.awake) {
+				$('#sun').css('visibility', 'hidden');
+				$('#moon').css('visibility', 'visible');
+				$('main').css('backgroundColor', 'rgb(14, 29, 50)');
+				if (pet.age < 2) {
+					$('#tomaImg').attr('src', 'images/squirtle-night.jpeg');
+				} else if (pet.age >= 2 && pet.age < 4) {
+					$('#tomaImg').attr('src', 'images/wartortle-night.jpeg');
+				} else {
+					$('#tomaImg').attr('src', 'images/blastoise-night.jpeg');
+				}
+				pet.awake = false;
+				pet.sleep();
 			} else {
-				$('#tomaImg').attr('src', 'images/blastoise-night.jpeg');
+				$('#sun').css('visibility', 'visible');
+				$('#moon').css('visibility', 'hidden');
+				$('main').css('backgroundColor', 'rgb(174, 221, 218)');
+				if (pet.age < 2) {
+					$('#tomaImg').attr('src', 'images/squirtle-day.jpeg');
+				} else if (pet.age >= 2 && pet.age < 4) {
+					$('#tomaImg').attr('src', 'images/wartortle-day.jpeg');
+				} else {
+					$('#tomaImg').attr('src', 'images/blastoise-day.jpeg');
+				}
+				$('#memo').text('');
+				pet.awake = true;
 			}
-			pet.awake = false;
-			pet.sleep();
-		} else {
-			$('#sun').css('visibility', 'visible');
-			$('#moon').css('visibility', 'hidden');
-			$('main').css('backgroundColor', 'rgb(174, 221, 218)');
-			if (pet.age < 2) {
-				$('#tomaImg').attr('src', 'images/squirtle-day.jpeg');
-			} else if (pet.age >= 2 && pet.age < 4) {
-				$('#tomaImg').attr('src', 'images/wartortle-day.jpeg');
-			} else {
-				$('#tomaImg').attr('src', 'images/blastoise-day.jpeg');
-			}
-			$('#memo').text('');
-			pet.awake = true;
 		}
 	}, 
 	addHunger() {
@@ -126,7 +132,12 @@ const game = {
 		}
 		if (this.time % 10 === 0) {
 			this.addAge();
+			$('#tomaImg').velocity('transition.slideLeftOut', 3000)
 			$('#tomaImg').velocity('transition.bounceLeftIn', 3000);
+		}
+		if (this.time % 15 === 0) {
+			$('#tomaImg').velocity('transition.slideRightOut', 2000)
+			$('#tomaImg').velocity('transition.bounceRightIn', 2000);
 		}
 	},
 	timeLapseToma() {
@@ -201,16 +212,19 @@ $('#UI').on('click', (event) => {
 		game.init();
 	} else if (event.target.innerText === 'Set Name') {
 		event.preventDefault();
-		pet.name = $('#form')[0].children[0].value;
-		if (pet.name) {
-			$('#name').text(`My name is ${pet.name}.`);
-		} else {
-			return;
+		if (pet.dead === false) {
+			pet.name = $('#form')[0].children[0].value;
+			if (pet.name) {
+				$('#name').text(`My name is ${pet.name}.`);
+			} else {
+				return;
+			}
 		}
 	}
 });
 
 let pet = new Tomagotchi();
+$('body').velocity('transition.fadeIn', 5000);
 
 
 
