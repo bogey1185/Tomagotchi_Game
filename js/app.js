@@ -6,17 +6,22 @@ class Tomagotchi {
 		this.boredom = 0;
 		this.age = 0;
 		this.awake = true;
+		this.image = 'images/squirtle-day.jpeg';
+		this.dead = true;
 	}
 	eat() {
 		this.hunger = 0;
+		$('#hungerSpan').text(pet.hunger);
 		$('#memo').text('nomnomnom... Thanks!');
 	}
 	play() {
 		this.boredom = 0;
+		$('#boredSpan').text(pet.boredom);
 		$('#memo').text('That was fun!');
 	}
 	sleep() {
 		this.sleepiness = 0;
+		$('#sleepSpan').text(pet.sleepiness);
 		if (this.awake === false) {
 			$('#memo').text('zzzzzzZZZZZZZZZzzzzzz');
 		}
@@ -25,6 +30,7 @@ class Tomagotchi {
 
 const game = { 
 	time: 0,
+	timeLapse: null,
 	feedToma() {
 		if (pet.awake) {
 			pet.eat();
@@ -52,12 +58,26 @@ const game = {
 			$('#sun').css('visibility', 'hidden');
 			$('#moon').css('visibility', 'visible');
 			$('main').css('backgroundColor', 'rgb(14, 29, 50)');
+			if (pet.age < 2) {
+				$('#tomaImg').attr('src', 'images/squirtle-night.jpeg');
+			} else if (pet.age >= 2 && pet.age < 4) {
+				$('#tomaImg').attr('src', 'images/wartortle-night.jpeg');
+			} else {
+				$('#tomaImg').attr('src', 'images/blastoise-night.jpeg');
+			}
 			pet.awake = false;
 			pet.sleep();
 		} else {
 			$('#sun').css('visibility', 'visible');
 			$('#moon').css('visibility', 'hidden');
 			$('main').css('backgroundColor', 'rgb(174, 221, 218)');
+			if (pet.age < 2) {
+				$('#tomaImg').attr('src', 'images/squirtle-day.jpeg');
+			} else if (pet.age >= 2 && pet.age < 4) {
+				$('#tomaImg').attr('src', 'images/wartortle-day.jpeg');
+			} else {
+				$('#tomaImg').attr('src', 'images/blastoise-day.jpeg');
+			}
 			$('#memo').text('');
 			pet.awake = true;
 		}
@@ -79,7 +99,7 @@ const game = {
 	addBoredom() {
 		pet.boredom++;
 		$('#boredSpan').text(pet.boredom);
-		if (pet.doredom === 10) {
+		if (pet.boredom === 10) {
 			this.killToma();
 		}
 	}, 
@@ -93,35 +113,80 @@ const game = {
 			this.killToma();
 		}
 	},
+	runTime() {
+		this.time++;
+		if (this.time % 1 === 0) {
+			this.addBoredom();
+		}
+		if (this.time % 2 === 0) {
+			this.addHunger();
+		}
+		if (this.time % 3 === 0) {
+			this.addSleepiness();
+		}
+		if (this.time % 10 === 0) {
+			this.addAge();
+		}
+	},
 	timeLapseToma() {
-		let runHunger = setInterval(this.addHunger, 60000);
-		let runSleepiness = setInterval(this.addSleepiness, 120000);
-		let runBoredom = setInterval(this.addBoredom, 30000);
-		let runAge = setInterval(this.addAge, 600000);
+		this.timeLapse = setInterval(() => {
+			this.runTime()
+		}, 1000);
 	},
 	evolveToma() {
-		
+		if (pet.age >= 2 && pet.age < 4){
+			if (pet.awake) {
+				$('#tomaImg').attr('src', 'images/wartortle-day.jpeg');
+			} else {
+				$('#tomaImg').attr('src', 'images/wartortle-night.jpeg');
+			}
+		}
+		if (pet.age >= 4){
+			if (pet.awake) {
+				$('#tomaImg').attr('src', 'images/blastoise-day.jpeg');
+			} else {
+				$('#tomaImg').attr('src', 'images/blastoise-night.jpeg');
+			}
+		}
 	},
 	killToma() {
-
+		clearInterval(this.timeLapse);
+		pet.dead = true;
+		pet.awake ? $('#tomaImg').attr('src', 'images/rip-day.png') : $('#tomaImg').attr('src', 'images/rip-night.png');
+		if (pet.name) {
+				$('#memo').text(`${pet.name} died!`);
+			} else {
+				$('#memo').text('Your pet died!');
+			}
+		console.log('dead');
+		//add code to make toma
 	},
 	init() {
-		//should be a button to run init somewhere
-		//should set all counters to 0 initially
-
-
-		//should call class to create TOMA.
-		//should immediately start timeLapseToma()
-
+		if (pet.dead === true) {
+			pet.name = null;
+			pet.hunger = 0;
+			pet.sleepiness = 0;
+			pet.boredom = 0;
+			pet.age = 0;
+			pet.dead = false;
+			$('#ageSpan').text(pet.age);
+			$('#boredSpan').text(pet.boredom);
+			$('#sleepSpan').text(pet.sleepiness);
+			$('#hungerSpan').text(pet.hunger);
+			$('#sun').css('visibility', 'visible');
+			$('#moon').css('visibility', 'hidden');
+			$('main').css('backgroundColor', 'rgb(174, 221, 218)');
+			$('#name').text('Hello!');
+			$('#memo').text('Have fun!')
+			pet.awake = true;
+			this.time = 0;
+			this.timeLapse = null;
+			$('#tomaImg').attr('src', 'images/squirtle-day.jpeg');
+			this.timeLapseToma();	
+		} else {
+			return;
+		}	
 	}
-
-
-
-	//buttons and forms: form to name pet. button to assign name.
-	// buttons to feed, turn off/on awake, play.
-
-
-
 }
 
 $('#UI').on('click', (event) => {
@@ -131,6 +196,8 @@ $('#UI').on('click', (event) => {
 		game.playToma();
 	} else if (event.target.innerText === 'Wake/Sleep') {
 		game.toggleAwake();
+	} else if (event.target.innerText === 'Start') {
+		game.init();
 	} else if (event.target.innerText === 'Set Name') {
 		event.preventDefault();
 		pet.name = $('#form')[0].children[0].value;
@@ -143,7 +210,6 @@ $('#UI').on('click', (event) => {
 });
 
 let pet = new Tomagotchi();
-
 
 
 
