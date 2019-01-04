@@ -126,6 +126,7 @@ const game = {
 		}
 		if (this.time % 10 === 0) {
 			this.addAge();
+			$('#tomaImg').velocity('transition.bounceLeftIn', 3000);
 		}
 	},
 	timeLapseToma() {
@@ -158,8 +159,6 @@ const game = {
 			} else {
 				$('#memo').text('Your pet died!');
 			}
-		console.log('dead');
-		//add code to make toma
 	},
 	init() {
 		if (pet.dead === true) {
@@ -182,6 +181,8 @@ const game = {
 			this.time = 0;
 			this.timeLapse = null;
 			$('#tomaImg').attr('src', 'images/squirtle-day.jpeg');
+			$('#tomaImg').css('visibility', 'visible');
+			$('#tomaImg').velocity('transition.expandIn', {duration: 1000});
 			this.timeLapseToma();	
 		} else {
 			return;
