@@ -72,7 +72,7 @@ main {
 }
 
 #ground {
-	height: 10vh;
+	height: 6vh;
 	background-color: green;
 	margin: 0;
 }
@@ -84,7 +84,7 @@ h1 {
 }
 
 #UI {
-	height: 30vh;
+	height: 34vh;
 	background-color: rgb(76, 32, 6);
 	text-align: center;
 }
@@ -99,3 +99,10 @@ button {
 form {
 	text-align: center;
 }
+/*
+#startBtn {
+	height: 20px;
+	width: 80px;
+	border-radius: 
+
+}*/

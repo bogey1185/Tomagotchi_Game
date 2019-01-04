@@ -8,16 +8,18 @@ class Tomagotchi {
 		this.awake = true;
 		this.image = 'images/squirtle-day.jpeg';
 		this.dead = true;
+		this.eatingPhrases = ['nomnomnom... Thanks!', 'mmmmmmm', 'That was great!'];
+		this.playPhrases = ['That was fun!', "Let's play again soon, ok?", 'Fun! Thanks!'];
 	}
 	eat() {
 		this.hunger = 0;
 		$('#hungerSpan').text(pet.hunger);
-		$('#memo').text('nomnomnom... Thanks!');
+		$('#memo').text(this.eatingPhrases[Math.floor(Math.random()*3)]);
 	}
 	play() {
 		this.boredom = 0;
 		$('#boredSpan').text(pet.boredom);
-		$('#memo').text('That was fun!');
+		$('#memo').text(this.playPhrases[Math.floor(Math.random()*3)]);
 	}
 	sleep() {
 		this.sleepiness = 0;
@@ -63,6 +65,7 @@ const game = {
 				$('#sun').css('visibility', 'hidden');
 				$('#moon').css('visibility', 'visible');
 				$('main').css('backgroundColor', 'rgb(14, 29, 50)');
+				$('main').velocity('fadeIn', {duration: 1500});
 				if (pet.age < 2) {
 					$('#tomaImg').attr('src', 'images/squirtle-night.jpeg');
 				} else if (pet.age >= 2 && pet.age < 4) {
@@ -76,6 +79,7 @@ const game = {
 				$('#sun').css('visibility', 'visible');
 				$('#moon').css('visibility', 'hidden');
 				$('main').css('backgroundColor', 'rgb(174, 221, 218)');
+				$('main').velocity('fadeIn', {duration: 1500});
 				if (pet.age < 2) {
 					$('#tomaImg').attr('src', 'images/squirtle-day.jpeg');
 				} else if (pet.age >= 2 && pet.age < 4) {
@@ -130,12 +134,12 @@ const game = {
 		if (this.time % 3 === 0) {
 			this.addSleepiness();
 		}
-		if (this.time % 10 === 0) {
+		if (this.time % 11 === 0) {
 			this.addAge();
 			$('#tomaImg').velocity('transition.slideLeftOut', 3000)
 			$('#tomaImg').velocity('transition.bounceLeftIn', 3000);
 		}
-		if (this.time % 15 === 0) {
+		if (this.time % 16 === 0) {
 			$('#tomaImg').velocity('transition.slideRightOut', 2000)
 			$('#tomaImg').velocity('transition.bounceRightIn', 2000);
 		}
@@ -163,6 +167,10 @@ const game = {
 	},
 	killToma() {
 		clearInterval(this.timeLapse);
+		$('.animate').velocity('finish', true);
+		$('.velocity-animating').velocity('stop', true);
+		$('#startBtn').velocity('fadeIn', {duration: 1000});
+		$('#startBtn').velocity({height: '35px', width: '80px'}, {duration: 1000, loop: true});
 		pet.dead = true;
 		pet.awake ? $('#tomaImg').attr('src', 'images/rip-day.png') : $('#tomaImg').attr('src', 'images/rip-night.png');
 		if (pet.name) {
@@ -188,6 +196,8 @@ const game = {
 			$('main').css('backgroundColor', 'rgb(174, 221, 218)');
 			$('#name').text('Hello!');
 			$('#memo').text('Have fun!')
+			$('#startBtn').velocity('stop', true);
+			$('#startBtn').velocity('fadeOut', {duration: 1000});
 			pet.awake = true;
 			this.time = 0;
 			this.timeLapse = null;
@@ -225,8 +235,7 @@ $('#UI').on('click', (event) => {
 
 let pet = new Tomagotchi();
 $('body').velocity('transition.fadeIn', 5000);
-
-
+$('#startBtn').velocity({height: '35px', width: '80px'}, {duration: 1000, loop: true});
 
 
 
